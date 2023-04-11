@@ -215,9 +215,9 @@ class WC_GSama extends WC_Payment_Gateway
         $saved_payment_total_price = get_post_meta($order_id, 'gsama_transaction_total_price', true);
         $saved_client_id = get_post_meta($order_id, 'gsama_transaction_client_id', true);
 
-        $request_id = $_GET['request_id'] ?? '';
-        $process_id = $_GET['process_id'] ?? '';
-        $reference_number = $_GET['reference_number'] ?? '';
+        $request_id = sanitize_text_field($_GET['request_id'] ?? '');
+        $process_id = sanitize_text_field($_GET['process_id'] ?? '');
+        $reference_number = sanitize_text_field($_GET['reference_number'] ?? '');
 
 
         if ($saved_transaction_status != 201 or empty($saved_client_id)) {
