@@ -4,7 +4,7 @@ author URI: https://www.sama.ir/
 Contributors: irsama
 Tags: woocommerce,sama, iran, persian, farsi,woocommerce persian, e-commerce, ووکامرس, ووکامرس فارسی,sama woocommerce,بانک,سما,درگاه پرداخت,payment gateway,woocommerce payment
 Requires at least: 6.0.0
-Tested up to: 6.1.1
+Tested up to: 6.2
 Stable tag: 1.0.3
 Requires PHP: 7.4
 License: GPLv2 or later
@@ -13,6 +13,14 @@ License: GPLv2 or later
 
 == Description ==
 **Sama Gateway** این افزونه درگاه پرداخت تضمین شده سما را به ووکامرس اضافه می کند.
+
+این افزونه از درگاه تضمین خرید سامانه معاملات امن ایران (سما) برای ارائه سرویس استفاده می کند. برای اطلاعات بیشتر در مورد سرویس ها یا قوانین استفاده از سرویس به آدرس زیر مراجعه کنید:
+
+https://sama.ir/guaranteed
+ُ
+This plugin utilizes SAMA GIPG services, which is provided by https://sama.ir
+
+For further details about the terms of use and services offered by SAMA, users can refer to their website at https://sama.ir/guaranteed
 
 = امکانات =
  * پرداخت تضمین شده سامانه معاملات امن ایران (سما)
