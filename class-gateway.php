@@ -19,7 +19,7 @@ class WC_GSama extends WC_Payment_Gateway
         $this->has_fields = false;
         $this->icon = apply_filters(
             "WC_GSama_logo",
-            WP_PLUGIN_URL . "/woo-sama-gateway/assets/images/logo.png"
+            plugins_url("/assets/images/logo.png", __FILE__)
         );
 
         // Get setting values.
