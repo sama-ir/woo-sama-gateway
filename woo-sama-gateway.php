@@ -4,7 +4,7 @@ if (!defined("ABSPATH")) {
     exit();
 }
 /**
- * Plugin Name: درگاه پرداخت تضمین شده سما
+ * Plugin Name: Sama Payment Gateway
  * Author: سامانه معاملات امن ایران (سما)
  * Description: این افزونه درگاه پرداخت تضمین شده سما را به ووکامرس اضافه می کند.
  * Version: 1.0.0
