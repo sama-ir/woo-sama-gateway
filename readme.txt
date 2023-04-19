@@ -17,7 +17,7 @@ License: GPLv2 or later
 این افزونه از درگاه تضمین خرید سامانه معاملات امن ایران (سما) برای ارائه سرویس استفاده می کند. برای اطلاعات بیشتر در مورد سرویس ها یا قوانین استفاده از سرویس به آدرس زیر مراجعه کنید:
 
 https://sama.ir/guaranteed
-ُ
+
 This plugin utilizes SAMA GIPG services, which is provided by https://sama.ir
 
 For further details about the terms of use and services offered by SAMA, users can refer to their website at https://sama.ir/guaranteed
