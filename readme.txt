@@ -5,7 +5,7 @@ Contributors: irsama
 Tags: woocommerce,sama, iran, persian, farsi,woocommerce persian, e-commerce, ووکامرس, ووکامرس فارسی,sama woocommerce,بانک,سما,درگاه پرداخت,payment gateway,woocommerce payment
 Requires at least: 6.0.0
 Tested up to: 6.2
-Stable tag: 1.0.5
+Stable tag: 1.0.6
 Requires PHP: 7.4
 License: GPLv2 or later
 
@@ -36,6 +36,10 @@ For further details about the terms of use and services offered by SAMA, users c
 3. تنظیمات افزونه را می توانید از طریق قسمت تنظیمات ووکامرس / تسویه حساب انجام دهید
 
 == Changelog ==
+
+= 1.0.6 =
+
+افزایش مقدار timeout درخواست ها به سما
 
 = 1.0.5 =
 

@@ -168,6 +168,7 @@ class WC_GSama extends WC_Payment_Gateway
                     ),
                 ]),
                 "data_format" => "body",
+                "timeout" => 15
             ]
         );
 
@@ -317,6 +318,7 @@ class WC_GSama extends WC_Payment_Gateway
                     "client_id" => $saved_client_id,
                 ]),
                 "data_format" => "body",
+                "timeout" => 15
             ]
         );
 
@@ -334,6 +336,7 @@ class WC_GSama extends WC_Payment_Gateway
                             "client_id" => $saved_client_id,
                         ]),
                         "data_format" => "body",
+                        "timeout" => 15
                     ]
                 );
                 if (!is_wp_error($response)) {
