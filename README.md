@@ -42,6 +42,10 @@ For further details about the terms of use and services offered by SAMA, users c
 
 ## لاگ تغییرات
 
+- 1.0.5
+
+رفع باگ به هنگام اکشن checkout
+
 - 1.0.4
 
 استفاده از plugins_url برای هماهنگی با بعضی از نصب های وردپرس
