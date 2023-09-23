@@ -42,6 +42,11 @@ For further details about the terms of use and services offered by SAMA, users c
 
 ## لاگ تغییرات
 
+- 1.0.7
+
+رفع باگ درخواست نامعتبر
+تغییر متن توضیحات درگاه
+
 - 1.0.6
 
 افزایش مقدار timeout درخواست ها به سما
