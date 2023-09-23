@@ -1,9 +1,9 @@
 <?php
 
-if (!defined("ABSPATH")) {
-    exit();
+if (!defined('ABSPATH')) {
+    exit;
 }
-/**
+/*
  * Plugin Name: Sama Payment Gateway
  * Author: سامانه معاملات امن ایران (سما)
  * Description: این افزونه درگاه پرداخت تضمین شده سما را به ووکامرس اضافه می کند.
@@ -16,6 +16,6 @@ if (!defined("ABSPATH")) {
  * WC tested up to: 7.3
  */
 
-define("WOO_GSAMA_GATEWAY_DIR", trailingslashit(plugin_dir_path(__FILE__)));
+define('WOO_GSAMA_GATEWAY_DIR', trailingslashit(plugin_dir_path(__FILE__)));
 
-require_once WOO_GSAMA_GATEWAY_DIR . "action.php";
+require_once WOO_GSAMA_GATEWAY_DIR.'action.php';
