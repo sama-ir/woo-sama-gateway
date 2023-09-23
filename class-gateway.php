@@ -281,7 +281,7 @@ class WC_GSama extends WC_Payment_Gateway
             $_GET['reference_number'] ?? ''
         );
 
-        if (201 != $saved_transaction_status or empty($saved_client_id)) {
+        if (empty($saved_client_id)) {
             $notice = 'درخواست نامعتبر است.';
             wc_add_notice($notice, 'error');
             $order->add_order_note($notice, 1);
