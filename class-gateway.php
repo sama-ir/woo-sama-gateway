@@ -15,7 +15,7 @@ class WC_GSama extends WC_Payment_Gateway
         // Gateway Info
         $this->id = 'WC_GSama';
         $this->method_title = 'پرداخت امن سما + ضمانت خرید';
-        $this->method_description = 'ضمانت 10 روزۀ بازگشت 100 درصد وجه';
+        $this->method_description = 'ضمانت 15 روزۀ بازگشت 100 درصد وجه';
         $this->has_fields = false;
         $this->icon = apply_filters(
             'WC_GSama_logo',
