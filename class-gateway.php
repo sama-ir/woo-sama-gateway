@@ -10,6 +10,8 @@ class WC_GSama extends WC_Payment_Gateway
 
     protected string $failed_message;
 
+    protected string $version;
+
     public function __construct()
     {
         // Gateway Info
@@ -21,6 +23,8 @@ class WC_GSama extends WC_Payment_Gateway
             'WC_GSama_logo',
             plugins_url('/assets/images/logo.png', __FILE__)
         );
+
+        $this->version = '1.0.7';
 
         // Get setting values.
         $this->init_form_fields();
@@ -55,6 +59,58 @@ class WC_GSama extends WC_Payment_Gateway
             $this,
             'sama_checkout_return_handler',
         ]);
+
+        // Hook to run when payment gateway settings are saved
+        $gateway_id = $this->id;
+        add_action('woocommerce_update_options_payment_gateways_'.$gateway_id, [
+            $this, 'payment_gateway_save_settings',
+        ]);
+    }
+
+    public function validate_api_key_field(string $key, string $api_key)
+    {
+        $api_key = trim($api_key);
+
+        // Validate the api key using sama health check web service
+        $result = $this->api_key_is_valid($api_key);
+
+        if (true === $result) {
+            // Api key is valid, just return it
+            return $api_key;
+        } else {
+            // Api key is not valid, display an error message
+            $this->errors[] = 'توکن وارد شده معتبر نیست، لطفا از صحت توکن اطمینان حاصل کنید و یا با پشتیبانی سما تماس بگیرید';
+
+            return '';
+        }
+    }
+
+    public function payment_gateway_save_settings()
+    {
+        $this->display_errors();
+    }
+
+    public function api_key_is_valid($api_key)
+    {
+        $healthcheck_url = 'https://app.sama.ir/api/stores/services/deposits/health/';
+        $response = wp_remote_get(
+            $healthcheck_url,
+            [
+                'headers' => [
+                    'Authorization' => 'Api-Key '.$api_key,
+                    'Content-Type' => 'application/json',
+                    'X-API-Client-Version' => 'woocommerce/'.$this->version,
+                ],
+            ]
+        );
+        if (is_array($response) && !is_wp_error($response)) {
+            $body = $response['body'];
+
+            return json_decode($body, true)['is_valid'];
+        }
+
+        // If the request fails, consider the value not valid
+        return false;
     }
 
     public function init_form_fields()
@@ -151,6 +207,7 @@ class WC_GSama extends WC_Payment_Gateway
                 'headers' => [
                     'Content-Type' => 'application/json',
                     'Authorization' => 'Api-Key '.$this->api_key,
+                    'X-API-Client-Version' => 'woocommerce/'.$this->version,
                 ],
                 'body' => json_encode([
                     'price' => $amount,
@@ -309,6 +366,7 @@ class WC_GSama extends WC_Payment_Gateway
                 'headers' => [
                     'Content-Type' => 'application/json',
                     'Authorization' => 'Api-Key '.$this->api_key,
+                    'X-API-Client-Version' => 'woocommerce/'.$this->version,
                 ],
                 'body' => json_encode([
                     'request_id' => $request_id,
@@ -327,6 +385,7 @@ class WC_GSama extends WC_Payment_Gateway
                         'headers' => [
                             'Content-Type' => 'application/json',
                             'Authorization' => 'Api-Key '.$this->api_key,
+                            'X-API-Client-Version' => 'woocommerce/'.$this->version,
                         ],
                         'body' => json_encode([
                             'request_id' => $request_id,
