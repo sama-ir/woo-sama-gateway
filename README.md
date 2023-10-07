@@ -42,6 +42,10 @@ For further details about the terms of use and services offered by SAMA, users c
 
 ## لاگ تغییرات
 
+- 1.1.0
+بررسی صحت توکن در زمان ذخیره کردن تنظیمات درگاه
+بهبودهای دیگر
+
 - 1.0.7
 
 رفع باگ درخواست نامعتبر

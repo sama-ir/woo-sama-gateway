@@ -24,7 +24,7 @@ class WC_GSama extends WC_Payment_Gateway
             plugins_url('/assets/images/logo.png', __FILE__)
         );
 
-        $this->version = '1.0.7';
+        $this->version = '1.1.0';
 
         // Get setting values.
         $this->init_form_fields();
