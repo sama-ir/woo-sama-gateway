@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) {
  * Plugin Name: Sama Payment Gateway
  * Author: سامانه معاملات امن ایران (سما)
  * Description: این افزونه درگاه پرداخت تضمین شده سما را به ووکامرس اضافه می کند.
- * Version: 1.1.0
+ * Version: 1.1.1
  * Author URI: https://www.sama.ir
  * Author Email: info@sama.ir
  * Requires at least: 6.0.0
@@ -18,4 +18,4 @@ if (!defined('ABSPATH')) {
 
 define('WOO_GSAMA_GATEWAY_DIR', trailingslashit(plugin_dir_path(__FILE__)));
 
-require_once WOO_GSAMA_GATEWAY_DIR.'action.php';
+require_once WOO_GSAMA_GATEWAY_DIR . 'action.php';

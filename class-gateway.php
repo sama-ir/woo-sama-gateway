@@ -24,7 +24,7 @@ class WC_GSama extends WC_Payment_Gateway
             plugins_url('/assets/images/logo.png', __FILE__)
         );
 
-        $this->version = '1.1.0';
+        $this->version = '1.1.1';
 
         // Get setting values.
         $this->init_form_fields();
@@ -41,7 +41,7 @@ class WC_GSama extends WC_Payment_Gateway
 
         if (version_compare(WOOCOMMERCE_VERSION, '2.0.0', '>=')) {
             add_action(
-                'woocommerce_update_options_payment_gateways_'.$this->id,
+                'woocommerce_update_options_payment_gateways_' . $this->id,
                 [$this, 'process_admin_options']
             );
         } else {
@@ -51,19 +51,20 @@ class WC_GSama extends WC_Payment_Gateway
             ]);
         }
 
-        add_action('woocommerce_receipt_'.$this->id, [
+        add_action('woocommerce_receipt_' . $this->id, [
             $this,
             'checkout_receipt_page',
         ]);
-        add_action('woocommerce_api_'.strtolower(get_class($this)), [
+        add_action('woocommerce_api_' . strtolower(get_class($this)), [
             $this,
             'sama_checkout_return_handler',
         ]);
 
         // Hook to run when payment gateway settings are saved
         $gateway_id = $this->id;
-        add_action('woocommerce_update_options_payment_gateways_'.$gateway_id, [
-            $this, 'payment_gateway_save_settings',
+        add_action('woocommerce_update_options_payment_gateways_' . $gateway_id, [
+            $this,
+            'payment_gateway_save_settings',
         ]);
     }
 
@@ -72,17 +73,28 @@ class WC_GSama extends WC_Payment_Gateway
         $api_key = trim($api_key);
 
         // Validate the api key using sama health check web service
-        $result = $this->api_key_is_valid($api_key);
+        $response = $this->api_key_is_valid($api_key);
 
-        if (true === $result) {
-            // Api key is valid, just return it
-            return $api_key;
-        } else {
-            // Api key is not valid, display an error message
-            $this->errors[] = 'توکن وارد شده معتبر نیست، لطفا از صحت توکن اطمینان حاصل کنید و یا با پشتیبانی سما تماس بگیرید';
-
+        if (is_wp_error($response)) {
+            // Add error message to errors array
+            $this->errors[] = 'ارسال درخواست به سما با مشکل روبرو شد، لطفا مطمئن شوید وردپرس امکان دسترسی به آدرس های sama.ir و api.sama.ir را داشته باشد. برای اطلاعات بیشتر به مستندات فنی سما در آدرس https://docs.sama.ir مراجعه کنید.';
             return '';
+        } else if (is_array($response)) {
+            $body = $response['body'];
+            $result = json_decode($body, true)['is_valid'];
+            if (true === $result) {
+                // Api key is valid, just return it
+                return $api_key;
+            } else {
+                // Api key is not valid, display an error message
+                $this->errors[] = 'توکن وارد شده معتبر نیست، لطفا از صحت توکن اطمینان حاصل کنید و یا با پشتیبانی سما تماس بگیرید';
+                return '';
+            }
         }
+
+        // If the request fails, consider the value not valid
+        $this->errors[] = 'مشکلی در فرآیند بررسی صحت توکن به وجود آمد، لطفا از صحت توکن و تنظیمات وردپرس خود اطمینان حاصل کنید و یا با پشتیبانی سما تماس بگیرید';
+        return '';
     }
 
     public function payment_gateway_save_settings()
@@ -97,20 +109,13 @@ class WC_GSama extends WC_Payment_Gateway
             $healthcheck_url,
             [
                 'headers' => [
-                    'Authorization' => 'Api-Key '.$api_key,
+                    'Authorization' => 'Api-Key ' . $api_key,
                     'Content-Type' => 'application/json',
-                    'X-API-Client-Version' => 'woocommerce/'.$this->version,
+                    'X-API-Client-Version' => 'woocommerce/' . $this->version,
                 ],
             ]
         );
-        if (is_array($response) && !is_wp_error($response)) {
-            $body = $response['body'];
-
-            return json_decode($body, true)['is_valid'];
-        }
-
-        // If the request fails, consider the value not valid
-        return false;
+        return $response;
     }
 
     public function init_form_fields()
@@ -192,13 +197,13 @@ class WC_GSama extends WC_Payment_Gateway
         }
 
         $client_id = sha1(
-            $order->get_customer_id().
-                '_'.
-                $order_id.
-                '_'.
-                $amount.
-                '_'.
-                time()
+            $order->get_customer_id() .
+            '_' .
+            $order_id .
+            '_' .
+            $amount .
+            '_' .
+            time()
         );
 
         $response = wp_remote_post(
@@ -206,8 +211,8 @@ class WC_GSama extends WC_Payment_Gateway
             [
                 'headers' => [
                     'Content-Type' => 'application/json',
-                    'Authorization' => 'Api-Key '.$this->api_key,
-                    'X-API-Client-Version' => 'woocommerce/'.$this->version,
+                    'Authorization' => 'Api-Key ' . $this->api_key,
+                    'X-API-Client-Version' => 'woocommerce/' . $this->version,
                 ],
                 'body' => json_encode([
                     'price' => $amount,
@@ -240,7 +245,7 @@ class WC_GSama extends WC_Payment_Gateway
             if ('validation_error' == $data->code) {
                 $error = '';
                 foreach ($data->extra as $item) {
-                    $error .= $item->error.' ';
+                    $error .= $item->error . ' ';
                     wc_add_notice($item->error, 'error');
                 }
                 $order->add_order_note($error);
@@ -265,7 +270,7 @@ class WC_GSama extends WC_Payment_Gateway
         update_post_meta($order_id, 'gsama_transaction_status', 201);
         update_post_meta($order_id, 'gsama_transaction_client_id', $client_id);
 
-        $note = 'کاربر به درگاه پرداخت ارجاع شد. شناسه تراکنش: '.$data->uid;
+        $note = 'کاربر به درگاه پرداخت ارجاع شد. شناسه تراکنش: ' . $data->uid;
         $order->add_order_note($note);
         wp_redirect($data->web_view_link);
 
@@ -365,8 +370,8 @@ class WC_GSama extends WC_Payment_Gateway
             [
                 'headers' => [
                     'Content-Type' => 'application/json',
-                    'Authorization' => 'Api-Key '.$this->api_key,
-                    'X-API-Client-Version' => 'woocommerce/'.$this->version,
+                    'Authorization' => 'Api-Key ' . $this->api_key,
+                    'X-API-Client-Version' => 'woocommerce/' . $this->version,
                 ],
                 'body' => json_encode([
                     'request_id' => $request_id,
@@ -384,8 +389,8 @@ class WC_GSama extends WC_Payment_Gateway
                     [
                         'headers' => [
                             'Content-Type' => 'application/json',
-                            'Authorization' => 'Api-Key '.$this->api_key,
-                            'X-API-Client-Version' => 'woocommerce/'.$this->version,
+                            'Authorization' => 'Api-Key ' . $this->api_key,
+                            'X-API-Client-Version' => 'woocommerce/' . $this->version,
                         ],
                         'body' => json_encode([
                             'request_id' => $request_id,
