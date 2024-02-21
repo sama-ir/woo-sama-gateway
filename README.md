@@ -42,6 +42,10 @@ For further details about the terms of use and services offered by SAMA, users c
 
 ## لاگ تغییرات
 
+- 1.1.2
+
+به روز رسانی لوگوی سما
+
 - 1.1.1
 
 نمایش خطای بلوکه شدن دسترسی به وب سرویس ها
